@@ -12,6 +12,7 @@
 import "./i18n"
 import "./utils/ignore-warnings"
 import React, { useState, useEffect, useRef } from "react"
+import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainerRef } from "@react-navigation/native"
 import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context"
 import { initFonts } from "./theme/fonts" // expo
@@ -50,7 +51,8 @@ function App() {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    ;(async () => {
+    SplashScreen.hide();
+    (async () => {
       await initFonts() // expo
       setupRootStore().then(setRootStore)
     })()
