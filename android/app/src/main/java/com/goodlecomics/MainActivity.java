@@ -1,4 +1,4 @@
-package com.helloworld;
+package com.goodlecomics;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;

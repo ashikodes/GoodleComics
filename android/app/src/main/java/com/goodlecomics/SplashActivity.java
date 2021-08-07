@@ -1,4 +1,4 @@
-package com.helloworld;
+package com.goodlecomics;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.helloworld.generated;
+package com.goodlecomics.generated;
 
 import java.util.Arrays;
 import java.util.List;
