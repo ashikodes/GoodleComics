@@ -141,6 +141,9 @@ android {
         versionName "1.0"
         manifestPlaceholders = [auth0Domain: "dev-hmrijhi6.eu.auth0.com", auth0Scheme: "${applicationId}"]
     }
+    dexOptions {
+       javaMaxHeapSize "4g"
+    }
     splits {
         abi {
             reset()
@@ -150,6 +153,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

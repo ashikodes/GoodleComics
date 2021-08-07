@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: color.palette.black,
     fontFamily: Platform.select({
-      ios: 'Poppins',
+      ios: 'Poppins-SemiBold',
       android: 'Poppins-SemiBold',
     }),
     fontSize: 24,
@@ -101,7 +101,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
       <View style={styles.header}>
         <View style={styles.headerProfile}>
           <Image style={styles.headerImage} source={{ uri: profile.picture}} />
-          <Text style={styles.headerText}>Hi User</Text>
+          <Text style={styles.headerText}>Hi {profile.nickname}</Text>
         </View>
         <Image style={styles.listIcon} source={require('../../../assets/images/list-icon.png')} />
       </View>

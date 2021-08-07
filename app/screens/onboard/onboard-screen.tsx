@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: Platform.select({
-      ios: 'Inter',
+      ios: 'Inter-Black',
       android: 'Inter-Black',
     }),
     fontSize: 36,

@@ -34,7 +34,7 @@ const onSuccess = (credentials, navigation) => {
 }
 
 export const LoginScreen = observer(function LoginScreen() {
-  const [ accessToken, setAccessToken ] = useState('');
+  const setAccessToken = useState('')[1];
   const navigation = useNavigation()
   useEffect(() => {
     auth0
@@ -52,7 +52,7 @@ export const LoginScreen = observer(function LoginScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header">{accessToken}</Text>
+      <Text preset="header"></Text>
     </Screen>
   )
 })
