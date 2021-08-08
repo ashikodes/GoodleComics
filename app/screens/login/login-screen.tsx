@@ -4,6 +4,8 @@ import { ViewStyle } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import SInfo from "react-native-sensitive-info"
 import Auth0 from 'react-native-auth0';
+import Config from "react-native-config";
+
 import { Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -15,8 +17,8 @@ export const SIOptions = {
 }
 
 const auth0 = new Auth0({ 
-  domain: 'dev-hmrijhi6.eu.auth0.com', //  Config.AUTH0_DOMAIN, 
-  clientId: '4zjru1OxTVsq8o7n9fpgbRcYML8eVZMX', // Config.AUTH0_CLIENT_ID
+  domain: Config.AUTH0_DOMAIN, 
+  clientId: Config.AUTH0_CLIENT_ID
 });
 
 const ROOT: ViewStyle = {

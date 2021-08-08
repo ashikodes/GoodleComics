@@ -31,7 +31,7 @@
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
           <data
-            android:host="dev-hmrijhi6.eu.auth0.com"
+            android:host="com.google.android.geo.AUTH0_DOMAIN"
             android:pathPrefix="/android/${applicationId}/callback"
             android:scheme="${applicationId}" />
         </intent-filter>

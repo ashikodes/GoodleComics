@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native"
 import SInfo from "react-native-sensitive-info"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import { SIOptions } from "../login/login-screen"
 
 const styles = StyleSheet.create({
   arrowIcon: {
@@ -72,8 +71,10 @@ export const OnboardScreen = observer(function OnboardScreen() {
 
   const navigation = useNavigation()
 
-  const onProceed = () => {
-    if (SInfo.getItem('accessToken', SIOptions)) {
+  const onProceed = async () => {
+    const tokenSaved = await SInfo.getItem('accessToken', {});
+    console.log('token-saved', tokenSaved)
+    if (tokenSaved) {
       navigation.navigate('home')
     } else {
       navigation.navigate('login')
