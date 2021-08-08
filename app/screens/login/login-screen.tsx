@@ -10,16 +10,17 @@ import { Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-
-export const SIOptions = {
-  sharedPreferencesName: "mySharedPrefs",
-  keychainService: "myKeychain",
-}
+import { save } from "../../utils/storage"
 
 const auth0 = new Auth0({ 
   domain: Config.AUTH0_DOMAIN, 
   clientId: Config.AUTH0_CLIENT_ID
 });
+
+export const SIOptions = {
+  sharedPreferencesName: Config.KEYCHAIN_NAME,
+  keychainService: Config.KEYCHAIN_SERVICE,
+}
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
@@ -29,10 +30,12 @@ const ROOT: ViewStyle = {
 const onSuccess = (credentials, navigation) => {
   auth0.auth
     .userInfo({ token: credentials.accessToken })
-    .then(profile => {
+    .then(async profile => {
       SInfo.setItem('accessToken', credentials.accessToken, SIOptions)
-      navigation.navigate('home', { profile })
-    });
+      await save('userProfile', profile)
+      navigation.navigate('home')
+    })
+    .catch(error => console.log(error));
 }
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -45,7 +48,8 @@ export const LoginScreen = observer(function LoginScreen() {
     .then(credentials => {
       setAccessToken(credentials.accessToken)
       onSuccess(credentials, navigation)
-    });
+    })
+    .catch(error => console.log(error));
   }, [])
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()

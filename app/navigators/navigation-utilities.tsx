@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import { BackHandler } from "react-native"
+import { BackHandler, DeviceEventEmitter } from "react-native"
 import { PartialState, NavigationState, NavigationContainerRef } from "@react-navigation/native"
 
 export const RootNavigation = {
@@ -44,6 +44,7 @@ export function useBackButtonHandler(
   ref: React.RefObject<NavigationContainerRef>,
   canExit: (routeName: string) => boolean,
 ) {
+  const [backPressSubscriptions] = useState(new Set())
   const canExitRef = useRef(canExit)
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export function useBackButtonHandler(
 
   useEffect(() => {
     // We'll fire this when the back button is pressed on Android.
-    const onBackPress = () => {
+    const handleBackPress = () => {
       const navigation = ref.current
 
       if (navigation == null) {
@@ -71,7 +72,6 @@ export function useBackButtonHandler(
       // we can't exit, so let's turn this into a back action
       if (navigation.canGoBack()) {
         navigation.goBack()
-
         return true
       }
 
@@ -79,10 +79,32 @@ export function useBackButtonHandler(
     }
 
     // Subscribe when we come to life
-    BackHandler.addEventListener("hardwareBackPress", onBackPress)
+    DeviceEventEmitter.removeAllListeners("hardwareBackPress")
+    DeviceEventEmitter.addListener("hardwareBackPress", () => {
+      let invokeDefault = true
+      const subscriptions = []
+
+      backPressSubscriptions.forEach(sub => subscriptions.push(sub))
+
+      for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+        if (subscriptions[i]()) {
+          invokeDefault = false
+          break
+        }
+      }
+
+      if (invokeDefault) {
+        BackHandler.exitApp()
+      }
+    })
+
+    backPressSubscriptions.add(handleBackPress)
 
     // Unsubscribe when we're done
-    return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress)
+    return () => {
+      DeviceEventEmitter.removeAllListeners("hardwareBackPress")
+      backPressSubscriptions.clear()
+    }
   }, [ref])
 }
 

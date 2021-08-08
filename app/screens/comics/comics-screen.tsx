@@ -1,23 +1,43 @@
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View, Image, Platform, ImageBackground, ScrollView } from "react-native"
+import { StyleSheet, View, Image, Platform, ScrollView } from "react-native"
 import axios from 'axios';
 import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
+import { load } from "../../utils/storage";
 
-const profile = {
-  "email": "ash1@gmail.com", 
-  "emailVerified": false, 
-  "name": "ash1@gmail.com", 
-  "nickname": "ash1", 
-  "picture": "https://i1.wp.com/cdn.auth0.com/avatars/as.png", 
-  "sub": "auth0|610c42f938a30b006ac819e1", 
-  "updatedAt": "2021-08-07T08:50:40.581Z"
-}
+// const profile = {
+//   "email": "ash1@gmail.com", 
+//   "emailVerified": false, 
+//   "name": "ash1@gmail.com", 
+//   "nickname": "ash1", 
+//   "picture": "https://i1.wp.com/cdn.auth0.com/avatars/as.png", 
+//   "sub": "auth0|610c42f938a30b006ac819e1", 
+//   "updatedAt": "2021-08-07T08:50:40.581Z"
+// }
 
 const styles = StyleSheet.create({
+  cardImage: {
+    borderRadius: 8,
+    height: 184,
+    width: 150,
+  },
+  comicCard: {
+    marginRight: 15,
+    width: 150,
+  },
+  comicName: {
+    color: color.palette.black,
+    fontSize: 18,
+    marginTop: 5,
+    paddingRight: 10,
+  },
+  comicsSection: {
+    backgroundColor: color.palette.white,
+    paddingTop: 50,
+  },
   container: {
     paddingBottom: 100,
     paddingLeft: 44,
@@ -53,10 +73,6 @@ const styles = StyleSheet.create({
     height: 14,
     width: 20,
   },
-  comicsSection: {
-    backgroundColor: color.palette.white,
-    paddingTop: 50,
-  },
   sectionHeader: {
     color: color.lightGray,
     fontSize: 18,
@@ -64,20 +80,6 @@ const styles = StyleSheet.create({
   },
   sectionSlide: {
     // backgroundColor: color.transparent,
-  },
-  comicCard: {
-    marginRight: 15,
-    width: 150,
-  },
-  cardImage: {
-    height: 184,
-    width: 150,
-  },
-  comicName: {
-    color: color.palette.black,
-    fontSize: 18,
-    marginTop: 5,
-    paddingRight: 10,
   }
 })
 
@@ -86,13 +88,24 @@ export const ComicsScreen = observer(function ComicsScreen() {
   // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
   const [ comics, setComics ] = useState([])
+  const [profile, setUserProfile] = useState<any>({})
   useEffect(() => {
+    const loadUser = async () => {
+      const user = await load('userProfile')
+      if (user) {
+        setUserProfile(user)
+      } else {
+        navigation.navigate('login')
+      }
+    }
     const fetchComics = async () => {
       const response = await axios.get('https://codecamp.exchangepointgroup.com/comics')
       setComics(response.data)
     }
+
+    loadUser()
     fetchComics()
   }, [])
 
@@ -100,8 +113,8 @@ export const ComicsScreen = observer(function ComicsScreen() {
     <Screen style={styles.container} preset="scroll">
       <View style={styles.header}>
         <View style={styles.headerProfile}>
-          <Image style={styles.headerImage} source={{ uri: profile.picture}} />
-          <Text style={styles.headerText}>Hi {profile.nickname}</Text>
+          <Image style={styles.headerImage} source={{ uri: profile?.picture}} />
+          <Text style={styles.headerText}>Hi {profile?.nickname}</Text>
         </View>
         <Image style={styles.listIcon} source={require('../../../assets/images/list-icon.png')} />
       </View>
@@ -111,7 +124,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
         <ScrollView horizontal style={styles.sectionSlide}>
           {comics.map(comic => (
             <View key={comic.id} style={styles.comicCard}>
-              <ImageBackground style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.page_images[0]?.formats?.thumbnail?.url}` }} />
+              <Image style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.page_images[0]?.formats?.thumbnail?.url}` }} />
               <Text style={styles.comicName}>{comic.title}</Text>
             </View>
           ))}
@@ -123,7 +136,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
         <ScrollView horizontal style={styles.sectionSlide}>
           {comics.map(comic => (
             <View key={comic.id} style={styles.comicCard}>
-              <ImageBackground style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.page_images[0]?.formats?.thumbnail?.url}` }} />
+              <Image style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.page_images[0]?.formats?.thumbnail?.url}` }} />
               <Text style={styles.comicName}>{comic.title}</Text>
             </View>
           ))}

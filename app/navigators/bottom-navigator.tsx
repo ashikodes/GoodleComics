@@ -7,7 +7,6 @@
 import React from "react"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ComicsScreen, CategoryScreen, LibraryScreen, SettingsScreen } from "../screens"
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FeatherIcons from 'react-native-vector-icons/Feather';
@@ -26,10 +25,13 @@ import FeatherIcons from 'react-native-vector-icons/Feather';
  */
 export type BottomParamList = {
   comics: undefined,
+  categories: undefined,
+  library: undefined,
+  settings: undefined,
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<BottomParamList>()
 
 export function BottomNavigator() {
   return (
@@ -95,5 +97,5 @@ export function BottomNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-// const exitRoutes = ['comics']
-// export const canExit = (routeName: string) => exitRoutes.includes(routeName)
+const exitRoutes = ['comics', 'categories', 'library', 'settings']
+export const canExit = (routeName: string) => exitRoutes.includes(routeName)
