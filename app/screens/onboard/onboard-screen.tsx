@@ -3,10 +3,9 @@ import { observer } from "mobx-react-lite"
 import { View, ImageBackground, StyleSheet, Platform, Image } from "react-native"
 import { Screen, Text, Button } from "../../components"
 import { useNavigation } from "@react-navigation/native"
-import SInfo from "react-native-sensitive-info"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import { SIOptions } from "../login/login-screen"
+import { load } from "../../utils/storage"
 
 const styles = StyleSheet.create({
   arrowIcon: {
@@ -59,9 +58,10 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Platform.select({
       ios: 'Poppins',
-      android: 'Poppins-SemiBold',
+      android: 'Poppins-Medium',
     }),
     fontSize: 38,
+    fontWeight: '600',
     lineHeight: 54,
   }
 });
@@ -73,8 +73,8 @@ export const OnboardScreen = observer(function OnboardScreen() {
   const navigation = useNavigation()
 
   const onProceed = async () => {
-    const tokenSaved = await SInfo.getItem('accessToken', SIOptions);
-    if (tokenSaved) {
+    const userProfile = await load('userProfile');
+    if (userProfile) {
       navigation.navigate('home')
     } else {
       navigation.navigate('login')

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View, Image, Platform, ScrollView } from "react-native"
+import { StyleSheet, View, Image, Platform, ScrollView, TouchableHighlight } from "react-native"
 import axios from 'axios';
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import { load } from "../../utils/storage";
+import { load, remove } from "../../utils/storage";
 
 // const profile = {
 //   "email": "ash1@gmail.com", 
@@ -92,31 +92,38 @@ export const ComicsScreen = observer(function ComicsScreen() {
   const [ comics, setComics ] = useState([])
   const [profile, setUserProfile] = useState<any>({})
   useEffect(() => {
-    const loadUser = async () => {
-      const user = await load('userProfile')
-      if (user) {
-        setUserProfile(user)
-      } else {
-        navigation.navigate('login')
-      }
-    }
     const fetchComics = async () => {
       const response = await axios.get('https://codecamp.exchangepointgroup.com/comics')
       setComics(response.data)
     }
+    const loadUser = async () => {
+      const user = await load('userProfile')
+      if (user) {
+        setUserProfile(user)
+        fetchComics()
+      } else {
+        navigation.navigate('onboard')
+      }
+    }
 
     loadUser()
-    fetchComics()
   }, [])
+
+  const logout = async () => {
+    await remove('userProfile')
+    navigation.navigate('onboard')
+  }
 
   return (
     <Screen style={styles.container} preset="scroll">
       <View style={styles.header}>
         <View style={styles.headerProfile}>
           <Image style={styles.headerImage} source={{ uri: profile?.picture}} />
-          <Text style={styles.headerText}>Hi {profile?.nickname}</Text>
+          <Text style={styles.headerText}>Hi {profile?.username}</Text>
         </View>
-        <Image style={styles.listIcon} source={require('../../../assets/images/list-icon.png')} />
+        <TouchableHighlight onPress={logout}>
+          <Image style={styles.listIcon} source={require('../../../assets/images/list-icon.png')} />
+        </TouchableHighlight>
       </View>
 
       <View style={styles.comicsSection}>

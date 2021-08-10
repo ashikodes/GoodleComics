@@ -44,6 +44,32 @@ export class Api {
     })
   }
 
+  async registerUser({ username, email, password }) {
+    const response = await this.apisauce.post('/auth/local/register', {
+      username, email, password
+    })
+    
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      return { error: response?.data }
+    }
+
+    return { response: response.data }
+  }
+  
+  async loginUser({ email, password }) {
+    const response = await this.apisauce.post('/auth/local', {
+      identifier: email, password
+    })
+    
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      return { error: response?.data }
+    }
+
+    return { response: response?.data }
+  }
+
   /**
    * Gets a list of users.
    */

@@ -22,8 +22,14 @@ export const color = {
   transparent: "rgba(0, 0, 0, 0)",
   opaque: "#000000c0",
   yellow: '#FFC107',
+  primaryBlue: '#364F6B',
   darkBlue: 'rgb(7, 48, 94))',
+  gray: '#8E8E8E',
   lightGray: '#969696',
+  inputBg: '#FBFBFB',
+  inputBorder: '#E8E7F0',
+  inputIcon: '#292D32',
+  placeholder: '#969696',
   /**
    * The screen background.
    */
