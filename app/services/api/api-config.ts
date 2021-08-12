@@ -1,7 +1,8 @@
 // Use this import if you want to use "env.js" file
 // const { API_URL } = require("../../config/env")
 // Or just specify it directly like this:
-const API_URL = "https://codecamp.exchangepointgroup.com"
+import Config from "react-native-config";
+const API_URL = Config.API_URL
 
 /**
  * The options used to configure the API.

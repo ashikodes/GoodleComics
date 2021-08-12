@@ -115,7 +115,7 @@ export const CategoryScreen = observer(function CategoryScreen() {
         <ScrollView horizontal style={styles.sectionSlide}>
           {comics.map(comic => (
             <View key={comic.id} style={styles.comicCard}>
-              <Image style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.imageThumbnail}` }} />
+              <Image style={styles.cardImage} source={{ uri: `${comic?.imageThumbnail}` }} />
               <Text style={styles.comicName}>{comic.title}</Text>
             </View>
           ))}
@@ -127,7 +127,7 @@ export const CategoryScreen = observer(function CategoryScreen() {
         <ScrollView horizontal style={styles.sectionSlide}>
           {comics.map(comic => (
             <View key={comic.id} style={styles.comicCard}>
-              <Image style={styles.cardImage} source={{ uri: `https://codecamp.exchangepointgroup.com${comic?.imageThumbnail}` }} />
+              <Image style={styles.cardImage} source={{ uri: `${comic?.imageThumbnail}` }} />
               <Text style={styles.comicName}>{comic.title}</Text>
             </View>
           ))}

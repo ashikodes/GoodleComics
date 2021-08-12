@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import Config from "react-native-config";
 import { Comic, ComicModel, ComicSnapshot } from "../comic/comic"
 import { withEnvironment } from "../extensions/with-environment"
 
@@ -7,12 +8,14 @@ import { withEnvironment } from "../extensions/with-environment"
  */
 const convertComics = (comic) => {
   const { id, title, summary, price } = comic
+  const imageURL = comic?.cover_page?.formats?.thumbnail?.url
+  const imageThumbnail = imageURL ? `${Config.API_URL}${imageURL}` : 'https://spng.pngfind.com/pngs/s/203-2031781_8-x-10-case-bound-cover-book-w.png'
   return {
     id: `${id}`,
     title,
     summary,
     price: price || 0,
-    imageThumbnail: comic?.cover_page?.formats?.thumbnail?.url,
+    imageThumbnail,
   }
 }
 
