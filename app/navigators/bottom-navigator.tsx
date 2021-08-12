@@ -5,11 +5,26 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet, Platform } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { ComicsScreen, CategoryScreen, LibraryScreen, SettingsScreen } from "../screens"
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FeatherIcons from 'react-native-vector-icons/Feather';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FeatherIcons from 'react-native-vector-icons/Feather'
+
+const styles = StyleSheet.create({
+  tab: {
+    height: 75,
+    paddingBottom: 14,
+  },
+  tabBarLabel: {
+    fontFamily: Platform.select({
+      ios: 'Quicksand-SemiBold',
+      android: 'Quicksand-SemiBold',
+    }),
+    fontSize: 14,
+  }
+})
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -36,7 +51,12 @@ const Tab = createBottomTabNavigator<BottomParamList>()
 export function BottomNavigator() {
   return (
     <Tab.Navigator
+      backBehavior="firstRoute"
       initialRouteName="comics"
+      tabBarOptions={{
+        style: styles.tab,
+        labelStyle: styles.tabBarLabel,
+      }}
     >
       <Tab.Screen
         name="comics"

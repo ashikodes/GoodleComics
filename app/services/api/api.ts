@@ -44,6 +44,10 @@ export class Api {
     })
   }
 
+  fetchComics() {
+    return this.apisauce.get('/comics')
+  }
+
   async registerUser({ username, email, password }) {
     const response = await this.apisauce.post('/auth/local/register', {
       username, email, password

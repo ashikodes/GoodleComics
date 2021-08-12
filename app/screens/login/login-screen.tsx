@@ -1,25 +1,18 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { StyleSheet, Platform, View, TouchableWithoutFeedback, TextInput, Dimensions } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import SInfo from "react-native-sensitive-info"
-import Auth0 from 'react-native-auth0';
 import Config from "react-native-config";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { Button, Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { color } from "../../theme"
 import { save } from "../../utils/storage"
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-const auth0 = new Auth0({ 
-  domain: Config.AUTH0_DOMAIN, 
-  clientId: Config.AUTH0_CLIENT_ID
-});
 
 export const SIOptions = {
   sharedPreferencesName: Config.KEYCHAIN_NAME,
@@ -54,6 +47,10 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.white,
     paddingHorizontal: 30,
     paddingVertical: 100,
+  },
+  errorText: {
+    color: color.error,
+    fontSize: 14,
   },
   formButton: {
     backgroundColor: color.primaryBlue,
@@ -106,12 +103,12 @@ const styles = StyleSheet.create({
     paddingRight: 55,
     paddingVertical: 16,
   },
-  inputError: {
-    borderColor: color.error,
-  },
   inputContainer: {
     marginTop: 44,
     position: 'relative',
+  },
+  inputError: {
+    borderColor: color.error,
   },
   inputIcon: {
     height: 35,
@@ -121,18 +118,14 @@ const styles = StyleSheet.create({
     width: 35,
   },
   loader: {
+    alignItems: 'center',
     backgroundColor: color.opaque,
+    justifyContent: 'center',
     position: 'absolute',
     zIndex: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   loadingText: {
     fontSize: 18,
-  },
-  errorText: {
-    color: color.error,
-    fontSize: 14,
   }
 })
 
