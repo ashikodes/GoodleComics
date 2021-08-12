@@ -30,6 +30,8 @@ export const color = {
   inputBorder: '#E8E7F0',
   inputIcon: '#292D32',
   placeholder: '#969696',
+  activeTintColor: '#395185',
+  inactiveTinitColor: '#707070',
   /**
    * The screen background.
    */

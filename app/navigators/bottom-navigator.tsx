@@ -14,6 +14,8 @@ import FeatherIcons from 'react-native-vector-icons/Feather'
 
 const styles = StyleSheet.create({
   tab: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     height: 75,
     paddingBottom: 14,
   },
