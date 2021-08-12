@@ -8,3 +8,4 @@ export * from "./comics/comics-screen"
 export * from "./category/category-screen"
 export * from "./library/library-screen"
 export * from "./settings/settings-screen"
+export * from './comic-details';

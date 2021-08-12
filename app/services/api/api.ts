@@ -35,6 +35,7 @@ export class Api {
    */
   setup() {
     // construct the apisauce instance
+    console.log("Dcm: " + JSON.stringify(DEFAULT_API_CONFIG));
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -65,7 +66,7 @@ export class Api {
     const response = await this.apisauce.post('/auth/local', {
       identifier: email, password
     })
-    
+    console.log(response);
     // the typical ways to die when calling an api
     if (!response.ok) {
       return { error: response?.data }

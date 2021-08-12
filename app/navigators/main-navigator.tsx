@@ -6,7 +6,7 @@
  */
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-import { OnboardScreen, LoginScreen } from "../screens"
+import { OnboardScreen, LoginScreen, ComicDetailsScreen } from "../screens"
 import { BottomNavigator } from "./bottom-navigator"
 
 /**
@@ -42,6 +42,7 @@ export function MainNavigator() {
       <Stack.Screen name='onboard' component={OnboardScreen} />
       <Stack.Screen name='login' component={LoginScreen} />
       <Stack.Screen name='home' component={BottomNavigator} />
+      <Stack.Screen name='comic-details' component={ComicDetailsScreen} />
     </Stack.Navigator>
   )
 }

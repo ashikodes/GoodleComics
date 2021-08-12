@@ -83,8 +83,8 @@ export const OnboardScreen = observer(function OnboardScreen() {
 
   return (
     <Screen style={styles.container} preset="scroll">
-      <ImageBackground 
-        source={require('../../../assets/images/board-image.png')} 
+      <ImageBackground
+        source={require('../../../assets/images/board-image.png')}
         resizeMode="stretch"
         resizeMethod="scale"
         style={styles.image}

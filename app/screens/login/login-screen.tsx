@@ -134,7 +134,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
   const [username, setUsername] = useState('')
   const [usernameError, setUsernameError] = useState('')
-  
+
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
 
@@ -184,10 +184,10 @@ export const LoginScreen = observer(function LoginScreen() {
     if (error?.data) {
       return setFormError(error?.data[0]?.messages[0]?.message)
     }
-    
+
     SInfo.setItem('accessToken', response.jwt, SIOptions)
     await save('userProfile', response.user)
-    
+
     navigation.navigate('home')
   }
 
@@ -198,15 +198,15 @@ export const LoginScreen = observer(function LoginScreen() {
           <Text style={styles.loadingText}>Please wait...</Text>
         </View>
       )}
-      <Text style={styles.headerText}>{isSignup ? 'Create an Account' : 'Login Account' }</Text>
+      <Text style={styles.headerText}>{isSignup ? 'Create an Account' : 'Login Account'}</Text>
       <View style={styles.formHeader}>
-        <TouchableWithoutFeedback onPress={() => {clearFormErrors(); setFormName('signup')}}>
+        <TouchableWithoutFeedback onPress={() => { clearFormErrors(); setFormName('signup') }}>
           <View>
             <Text style={isSignup ? styles.activeFormName : styles.formName}>Sign up</Text>
             <View style={isSignup && styles.activeBar} />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback  onPress={() => { clearFormErrors(); setFormName('signin') }}>
+        <TouchableWithoutFeedback onPress={() => { clearFormErrors(); setFormName('signin') }}>
           <View>
             <Text style={!isSignup ? styles.activeFormName : styles.formName}>Sign in</Text>
             <View style={!isSignup && styles.activeBar} />
@@ -215,15 +215,15 @@ export const LoginScreen = observer(function LoginScreen() {
       </View>
       {isSignup && (
         <View style={styles.inputContainer}>
-          <TextInput 
-            style={[styles.input, usernameError && styles.inputError]} 
+          <TextInput
+            style={[styles.input, usernameError && styles.inputError]}
             placeholder="Username"
             placeholderTextColor={color.placeholder}
             returnKeyType="next"
             autoCapitalize="none"
             onFocus={clearFormErrors}
             onSubmitEditing={() => emailRef?.current?.focus()}
-            onChangeText={setUsername} 
+            onChangeText={setUsername}
             value={username}
           />
           <FontAwesomeIcon name="user-o" color={usernameError ? color.error : color.inputIcon} size={35} style={styles.inputIcon} />
@@ -231,8 +231,8 @@ export const LoginScreen = observer(function LoginScreen() {
         </View>
       )}
       <View style={styles.inputContainer}>
-        <TextInput 
-          style={[styles.input, emailError && styles.inputError]} 
+        <TextInput
+          style={[styles.input, emailError && styles.inputError]}
           placeholder="Email"
           placeholderTextColor={color.placeholder}
           keyboardType="email-address"
@@ -240,7 +240,7 @@ export const LoginScreen = observer(function LoginScreen() {
           returnKeyType="next"
           onFocus={clearFormErrors}
           onSubmitEditing={() => passwordRef?.current?.focus()}
-          onChangeText={setEmail} 
+          onChangeText={setEmail}
           ref={emailRef}
           value={email}
         />
@@ -248,7 +248,7 @@ export const LoginScreen = observer(function LoginScreen() {
         <Text style={styles.errorText}>{emailError}</Text>
       </View>
       <View style={styles.inputContainer}>
-        <TextInput 
+        <TextInput
           style={[styles.input, (passwordError || formError) && styles.inputError]}
           placeholder="Password"
           placeholderTextColor={color.placeholder}
@@ -263,7 +263,7 @@ export const LoginScreen = observer(function LoginScreen() {
         <FeatherIcon name="eye-off" color={passwordError || formError ? color.error : color.inputIcon} size={35} style={styles.inputIcon} />
         <Text style={styles.errorText}>{passwordError || formError}</Text>
       </View>
-    
+
       <Button onPress={authUser} style={styles.formButton} textStyle={styles.buttonText} text={isSignup ? "Create Account" : "Sign in"} />
     </Screen>
   )
