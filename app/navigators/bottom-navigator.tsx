@@ -53,16 +53,18 @@ export function BottomNavigator() {
     <Tab.Navigator
       backBehavior="firstRoute"
       initialRouteName="comics"
-      tabBarOptions={{
-        style: styles.tab,
-        labelStyle: styles.tabBarLabel,
-        activeTintColor: color.palette.appDarkBlue
+      screenOptions={{
+        tabBarStyle: styles.tab,
+        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarActiveTintColor: color.palette.appDarkBlue,
+        tabBarInactiveTintColor: color.palette.appGray2
       }}
     >
       <Tab.Screen
         name="comics"
         component={ComicsScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ focused, size }) => (
             <Icon icon={focused ? "ic-home-active" : "ic-home"} style={{ width: size, height: size }} />
@@ -73,6 +75,7 @@ export function BottomNavigator() {
         name="categories"
         component={CategoryScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Categories',
           tabBarIcon: ({ focused, size }) => (
             <Icon icon={focused ? "ic-categories-active" : "ic-categories"} style={{ width: size, height: size }} />
@@ -83,6 +86,7 @@ export function BottomNavigator() {
         name="library"
         component={LibraryScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Library',
           tabBarIcon: ({ focused, size }) => (
             <Icon icon={focused ? "ic-library-active" : "ic-library"} style={{ width: size, height: size }} />
@@ -93,6 +97,7 @@ export function BottomNavigator() {
         name="settings"
         component={SettingsScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Settings',
           tabBarIcon: ({ focused, size }) => (
             <Icon icon={focused ? "ic-settings-active" : "ic-settings"} style={{ width: size, height: size }} />
