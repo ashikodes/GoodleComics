@@ -68,13 +68,13 @@ function App() {
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        {/* <SafeAreaProvider initialMetrics={initialWindowMetrics}> */}
           <RootNavigator
             ref={navigationRef}
             initialState={initialNavigationState}
             onStateChange={onNavigationStateChange}
           />
-        </SafeAreaProvider>
+        {/* </SafeAreaProvider> */}
       </RootStoreProvider>
     </ToggleStorybook>
   )
