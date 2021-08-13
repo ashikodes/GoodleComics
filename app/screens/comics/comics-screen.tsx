@@ -121,6 +121,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
                   activeOpacity={0.5}
                   key={comic.id}
                   style={styles.comicCard}
+                  onPress={() => navigation.navigate('comic-details')}
                 >
                   <Image style={styles.cardImage} source={{ uri: comic?.imageThumbnail }} />
                   <Text style={styles.comicName}>{comic.title}</Text>

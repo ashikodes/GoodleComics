@@ -1,70 +1,11 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { View, ImageBackground, StyleSheet, Platform, Image } from "react-native"
-import { Screen, Text, Button } from "../../components"
+import { View, ImageBackground, Image } from "react-native"
+import { StatusBar } from "expo-status-bar"
+import { Text, Button } from "../../components"
 import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
-import { color } from "../../theme"
 import { load } from "../../utils/storage"
-
-const styles = StyleSheet.create({
-  arrowIcon: {
-    height: 46,
-    width: 46,
-  },
-  button: {
-    backgroundColor: color.darkBlue,
-    height: 54,
-    width: 54,
-  },
-  container: {
-    backgroundColor: color.palette.black,
-    flex: 1,
-  },
-  footer: {
-    alignItems: 'flex-end',
-    display: 'flex',
-  },
-  header: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  headerCircle: {
-    backgroundColor: color.yellow,
-    borderRadius: 10,
-    height: 20,
-    marginRight: 12,
-    width: 20,
-  },
-  headerText: {
-    fontFamily: Platform.select({
-      ios: 'Inter-Black',
-      android: 'Inter-Black',
-    }),
-    fontSize: 36,
-  },
-  image: {
-    flex: 1,
-  },
-  opaque: {
-    backgroundColor: color.opaque,
-    flex: 1,
-    justifyContent: "space-between",
-    paddingBottom: 71,
-    paddingHorizontal: 42,
-    paddingTop: 56,
-  },
-  text: {
-    fontFamily: Platform.select({
-      ios: 'Poppins',
-      android: 'Poppins-Medium',
-    }),
-    fontSize: 38,
-    fontWeight: '600',
-    lineHeight: 54,
-  }
-});
+import styles from "./styles"
 
 export const OnboardScreen = observer(function OnboardScreen() {
   // Pull in one of our MST stores
@@ -82,7 +23,8 @@ export const OnboardScreen = observer(function OnboardScreen() {
   }
 
   return (
-    <Screen style={styles.container} preset="scroll">
+    <View style={styles.container}>
+      <StatusBar translucent style='light' />
       <ImageBackground
         source={require('../../../assets/images/board-image.png')}
         resizeMode="stretch"
@@ -104,6 +46,6 @@ export const OnboardScreen = observer(function OnboardScreen() {
           </View>
         </View>
       </ImageBackground>
-    </Screen>
+    </View>
   )
 })

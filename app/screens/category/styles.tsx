@@ -14,34 +14,8 @@ export default StyleSheet.create({
 
   titleBarStyle: {
     marginTop: 30,
-    marginHorizontal: 30
-  },
-
-  searchBarStickyWrapper: {
-    backgroundColor: color.palette.white
-  },
-
-  searchBarWrapper: {
-    height: 50,
-    borderRadius: 10,
     marginHorizontal: 30,
-    marginVertical: 20,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: color.palette.veryLightGray
-  },
-
-  searchIcon: {
-    width: 24,
-    height: 24
-  },
-
-  searchBarText: {
-    flex: 1,
-    fontFamily: 'Quicksand-SemiBold',
-    fontSize: 14,
-    color: color.palette.appGray
+    marginBottom: 20,
   },
 
   cardImage: {
@@ -95,6 +69,13 @@ export default StyleSheet.create({
     color: color.palette.black,
     fontFamily: 'Poppins-Bold',
     fontSize: 24,
+  },
+
+  headerTextUnderline: {
+    backgroundColor: color.palette.appDarkPurple,
+    width: 57,
+    height: 4,
+    borderRadius: 2
   },
 
   listIcon: {

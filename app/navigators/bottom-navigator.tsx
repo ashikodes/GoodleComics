@@ -66,7 +66,8 @@ export function BottomNavigator() {
           tabBarIcon: function Icon({ color, size }) {
             return (
               <AntDesignIcon name="home" color={color} size={size} />
-            )} 
+            )
+          }
         }}
       />
       <Tab.Screen
@@ -90,7 +91,8 @@ export function BottomNavigator() {
           tabBarIcon: function Icon({ color, size }) {
             return (
               <FeatherIcons name="bookmark" color={color} size={size} />
-            )} 
+            )
+          }
         }}
       />
       <Tab.Screen
@@ -101,7 +103,8 @@ export function BottomNavigator() {
           tabBarIcon: function Icon({ color, size }) {
             return (
               <AntDesignIcon name="setting" color={color} size={size} />
-            )} 
+            )
+          }
         }}
       />
     </Tab.Navigator>

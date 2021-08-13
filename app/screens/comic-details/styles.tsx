@@ -7,9 +7,17 @@ export default StyleSheet.create({
   },
 
   backIcon: {
-    width: 35,
-    height: 35,
-    marginLeft: 15
+    width: 20,
+    height: 20,
+    marginLeft: 20,
+    tintColor: color.palette.white
+  },
+
+  previewIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 10,
+    tintColor: color.palette.white
   },
 
   comicMarkIcon: {
@@ -32,9 +40,9 @@ export default StyleSheet.create({
     marginRight: 20
   },
 
-  comicImage: { 
-    flex: 1, 
-    borderRadius: 17 
+  comicImage: {
+    flex: 1,
+    borderRadius: 17
   },
 
   comicTitleRatingAndPriceWrapper: {
@@ -102,10 +110,26 @@ export default StyleSheet.create({
     height: '100%'
   },
 
-  backgroundDarkOverlay: { 
-    backgroundColor: 'rgba(0,0,0,0.4)', 
-    position: 'absolute', 
-    width: '100%', 
-    height: '100%' 
+  backgroundDarkOverlay: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  },
+
+  previewBtn: {
+    backgroundColor: '#364f6b',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+
+  previewTextBtn: {
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 14,
+    lineHeight: 15,
+    color: color.palette.white
   }
 });

@@ -20,8 +20,8 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
   const [isMarked, setIsMarked] = useState(false)
 
   // Pull in one of our MST stores
-  const { userStore } = useStores()
-  const { registerUser, loginUser } = userStore
+  // const { userStore } = useStores()
+  // const { registerUser, loginUser } = userStore
 
   // Pull in navigation via hook
   const navigation = useNavigation()
@@ -31,8 +31,10 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
       <AppTitleBar
         backgroundColor='transparent'
         leading={
-          <TouchableOpacity>
-            <Icon icon='ic-back' style={styles.backIcon} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+          >
+            <Icon icon='ic-arrow-back' style={styles.backIcon} />
           </TouchableOpacity>
         }
       />
@@ -74,6 +76,15 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
         <Text style={styles.comicPrice}>
           $69
         </Text>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.previewBtn}
+        >
+          <Icon icon='ic-preview' style={styles.previewIcon} />
+          <Text style={styles.previewTextBtn}>
+            Preview
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
