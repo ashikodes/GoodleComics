@@ -12,5 +12,6 @@ export const palette = {
   appLightBlue: '#22D1EE',
   veryLightGray: '#f5f5f5',
   appGray: '#656464',
-  appDarkPurple: '#10084D'
+  appDarkPurple: '#10084D',
+  appDarkBlue: '#395185'
 }

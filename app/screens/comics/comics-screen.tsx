@@ -18,19 +18,18 @@ export const ComicsScreen = observer(function ComicsScreen() {
   // Pull in navigation via hook
   const navigation = useNavigation()
   const [profile, setUserProfile] = useState<any>({})
-  useEffect(() => {
-    const loadUser = async () => {
-      const user = await load('userProfile')
-      if (user) {
-        setUserProfile(user)
-        getComics()
-      } else {
-        navigation.navigate('onboard')
-      }
-    }
 
-    loadUser()
-  }, [])
+  const loadUser = async () => {
+    const user = await load('userProfile')
+    if (user) {
+      setUserProfile(user)
+      getComics()
+    } else {
+      navigation.navigate('onboard')
+    }
+  }
+
+  loadUser();
 
   const logout = async () => {
     await remove('userProfile')
@@ -44,7 +43,9 @@ export const ComicsScreen = observer(function ComicsScreen() {
         backgroundColor={color.palette.white}
         contentContainerStyle={styles.titleBarStyle}
         leading={
-          profile?.picture && <Image style={styles.headerImage} source={{ uri: profile?.picture }} />
+          profile?.picture 
+          ? <Image style={styles.headerImage} source={{ uri: profile?.picture }} />
+          : <Icon icon='ic-default-user' style={styles.headerImage} />
         }
         title={
           <Text style={styles.headerText}>Hi, {profile?.username}</Text>
