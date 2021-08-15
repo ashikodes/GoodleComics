@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import AppTitleBar from '../../components/title-bar';
@@ -12,6 +13,7 @@ import { useStores } from "../../models"
 import styles from "./styles"
 import StarRating from 'react-native-star-rating';
 import Config from "react-native-config"
+import { color } from "../../theme";
 
 export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   const [isPurchased, setIsPurchased] = useState(false)
@@ -19,7 +21,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
 
   // Pull in one of our MST stores
   const { comicsStore } = useStores()
-  const { singleComic } = comicsStore
+  const { singleComic, getSingleComic, loadingSingleComics } = comicsStore
 
   // Pull in navigation via hook
   const navigation = useNavigation()
@@ -27,6 +29,15 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   const _getSingleComicData = () => {
     return JSON.parse(singleComic)
   }
+
+  useEffect(() => {
+    _loadSingleComic()
+  }, [])
+
+  const _loadSingleComic = () => {
+    const comicRawData = _getSingleComicData();
+    getSingleComic(comicRawData.id)
+  } 
 
   const _renderAppTitleBar = () => {
     return (
@@ -145,7 +156,16 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
       {_renderBackground()}
       <View style={{ position: 'absolute', height: '100%' }}>
         {_renderAppTitleBar()}
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={loadingSingleComics}
+            onRefresh={() => _loadSingleComic()}
+            tintColor={color.palette.white}
+          />
+        }
+        >
           <View>
             {_renderComicImage()}
             {_renderComicTitleRatingAndPrice()}

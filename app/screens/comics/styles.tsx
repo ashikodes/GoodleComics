@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { color } from "../../theme"
 
@@ -8,17 +8,22 @@ export default StyleSheet.create({
     backgroundColor: color.palette.white
   },
 
-  scrollViewContentWrapper: {
-    marginTop: getStatusBarHeight()
-  },
-
   titleBarStyle: {
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 20,
     marginHorizontal: 30
   },
 
   searchBarStickyWrapper: {
     backgroundColor: color.palette.white
+  },
+
+  titleBarWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 2
   },
 
   searchBarWrapper: {
@@ -34,7 +39,8 @@ export default StyleSheet.create({
 
   searchIcon: {
     width: 24,
-    height: 24
+    height: 24,
+    tintColor: color.palette.black
   },
 
   searchBarText: {
@@ -113,5 +119,61 @@ export default StyleSheet.create({
   comicHorizontalItemListContentContainerStyle: {
     paddingLeft: 30,
     paddingRight: 30
+  },
+
+  bigComic: {
+    width: '100%',
+    height: Dimensions.get('window').height * 2 / 3
+  },
+
+  bigComicInfoWrapper: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    padding: 20
+  },
+
+  bigComicInfoTitle: {
+    color: color.palette.black,
+    fontSize: 35,
+    fontFamily: 'Poppins-Bold',
+  },
+
+  bigComicInfoDescShort: {
+    color: color.palette.black,
+    fontSize: 17,
+    fontFamily: 'Poppins-Medium'
+  },
+
+  bigComicButtonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 30,
+    marginBottom: 20
+  },
+
+  bigComicButtonItem: {
+    flex: 1,
+    alignItems: 'center'
+  },
+
+  bigComicButtonItemIcon: {
+    width: 25,
+    height: 25,
+    tintColor: 'black'
+  },
+
+  bigComicButtonItemText: {
+    fontSize: 13,
+    marginTop: 5,
+    color: color.palette.black,
+    fontFamily: 'Quicksand-Medium'
+  },
+
+  bigComicButtonItemTextRead: {
+    fontSize: 13,
+    marginTop: 5,
+    color: color.palette.black,
+    fontFamily: 'Quicksand-Bold'
   }
 })

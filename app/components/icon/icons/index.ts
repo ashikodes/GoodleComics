@@ -14,7 +14,8 @@ export const icons = {
   'ic-library': require('./ic-library.png'),
   'ic-settings-active': require('./ic-settings-active.png'),
   'ic-settings': require('./ic-settings.png'),
-  'ic-default-user': require('./ic-default-user.png')
+  'ic-default-user': require('./ic-default-user.png'),
+  eye: require('./eye.png'),
 }
 
 export type IconTypes = keyof typeof icons

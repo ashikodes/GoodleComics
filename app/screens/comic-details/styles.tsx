@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 import { color } from '../../theme'
 
 export default StyleSheet.create({
@@ -90,7 +91,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: getBottomSpace()
   },
 
   purchaseReadBtn: {

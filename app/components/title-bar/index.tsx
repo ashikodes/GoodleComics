@@ -4,7 +4,7 @@ import styles from './styles';
 
 import { StatusBar } from 'expo-status-bar';
 
-export const AppTitleBarHeight = 56;
+export const appTitleBarHeight = 56;
 
 export default (props) => {
   const { 

@@ -23,7 +23,8 @@ export const ComicsStoreModel = types
   .model("ComicsStore")
   .props({
     comics: types.optional(types.array(ComicModel), []),
-    singleComic: types.optional(types.string, '{}')
+    singleComic: types.optional(types.string, '{}'),
+    loadingSingleComics: false
   })
   .extend(withEnvironment)
   .actions((self) => ({
@@ -31,7 +32,8 @@ export const ComicsStoreModel = types
     saveComics: (comics) => {
       const comicModels = comics.map(c => ({ ...c }))
       self.comics.replace(comicModels)
-    }
+    },
+    setLoadingSingleComic: (val) => self.loadingSingleComics = val
   }))
   .actions((self) => ({
     getComics: async () => {
@@ -39,6 +41,17 @@ export const ComicsStoreModel = types
       if (response.ok) {
         const rawResponse: any = response.data;
         self.saveComics(rawResponse.map(convertComics))
+      } else {
+        __DEV__ && console.tron.log(response)
+      }
+    },
+    getSingleComic: async (id) => {
+      self.setLoadingSingleComic(true)
+      const response = await self.environment.api.fetchSingleComic(id)
+      self.setLoadingSingleComic(false)
+      if (response.ok) {
+        const rawResponse: any = response.data;
+        self.saveSingleComic(rawResponse)
       } else {
         __DEV__ && console.tron.log(response)
       }
