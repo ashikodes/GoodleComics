@@ -1,30 +1,32 @@
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
-  Dimensions,
   TouchableOpacity,
-  ScrollView,
-  Image
+  ScrollView
 } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import AppTitleBar from '../../components/title-bar';
-import { Icon } from '../../components';
-import { Text } from "../../components"
+import { Icon, ImageWithPlaceholder, Text } from '../../components';
 import { useStores } from "../../models"
 import styles from "./styles"
 import StarRating from 'react-native-star-rating';
+import Config from "react-native-config"
 
-export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
+export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   const [isPurchased, setIsPurchased] = useState(false)
   const [isMarked, setIsMarked] = useState(false)
 
   // Pull in one of our MST stores
-  // const { userStore } = useStores()
-  // const { registerUser, loginUser } = userStore
+  const { comicsStore } = useStores()
+  const { singleComic } = comicsStore
 
   // Pull in navigation via hook
   const navigation = useNavigation()
+
+  const _getSingleComicData = () => {
+    return JSON.parse(singleComic)
+  }
 
   const _renderAppTitleBar = () => {
     return (
@@ -45,10 +47,10 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
     return (
       <View style={{ marginTop: 15 }}>
         <View style={styles.comicImageWrapper}>
-          <Image
+          <ImageWithPlaceholder
             resizeMode='cover'
             style={styles.comicImage}
-            source={{ uri: 'https://vnn-imgs-f.vgcloud.vn/2020/12/18/15/doraemon.jpg' }}
+            source={{ uri: `${Config.API_URL}${_getSingleComicData()?.cover_page?.formats?.large?.url}` }}
           />
         </View>
       </View>
@@ -60,7 +62,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
       <View style={styles.comicTitleRatingAndPriceWrapper}>
         <View style={{ flex: 1 }}>
           <Text style={styles.comicTitle}>
-            Doraemon
+            {_getSingleComicData().title}
           </Text>
           <StarRating
             disabled
@@ -74,7 +76,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
           />
         </View>
         <Text style={styles.comicPrice}>
-          $69
+          {_getSingleComicData().price ? `$${_getSingleComicData().price}` : "Free"}
         </Text>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -96,7 +98,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
           Description
         </Text>
         <Text style={styles.comicDescription}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus aliquet facilisis vulputate non in quam. Pretium aenean elementum volutpat turpis ut ullamcorper diam ultrices. Sodales accumsan nibh elit enim, quis potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus aliquet facilisis vulputate non in quam. Pretium aenean elementum volutpat turpis ut ullamcorper diam ultrices. Sodales accumsan nibh elit enim, quis potenti.
+          {_getSingleComicData().summary}
         </Text>
       </View>
     );
@@ -127,11 +129,11 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
   const _renderBackground = () => {
     return (
       <View>
-        <Image
+        <ImageWithPlaceholder
           resizeMode='cover'
           style={styles.background}
           blurRadius={10}
-          source={{ uri: 'https://vnn-imgs-f.vgcloud.vn/2020/12/18/15/doraemon.jpg' }}
+          source={{ uri: `${Config.API_URL}${_getSingleComicData()?.cover_page?.formats?.thumbnail?.url}` }}
         />
         <View style={styles.backgroundDarkOverlay} />
       </View>
@@ -144,9 +146,11 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen() {
       <View style={{ position: 'absolute', height: '100%' }}>
         {_renderAppTitleBar()}
         <ScrollView showsVerticalScrollIndicator={false}>
-          {_renderComicImage()}
-          {_renderComicTitleRatingAndPrice()}
-          {_renderComicDescription()}
+          <View>
+            {_renderComicImage()}
+            {_renderComicTitleRatingAndPrice()}
+            {_renderComicDescription()}
+          </View>
         </ScrollView>
         {_renderBottomBtns()}
       </View>

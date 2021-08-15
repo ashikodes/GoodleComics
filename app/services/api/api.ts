@@ -35,7 +35,6 @@ export class Api {
    */
   setup() {
     // construct the apisauce instance
-    console.log("Dcm: " + JSON.stringify(DEFAULT_API_CONFIG));
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -47,6 +46,14 @@ export class Api {
 
   fetchComics() {
     return this.apisauce.get('/comics')
+  }
+
+  fetchSingleComic(id) {
+    return this.apisauce.get(`/comics/${id}`)
+  }
+
+  fetchGenres() {
+    return this.apisauce.get('/genres')
   }
 
   async registerUser({ username, email, password }) {

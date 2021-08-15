@@ -1,14 +1,16 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { ComicsStore, ComicsStoreModel } from "../comics-store/comics-store"
-import { UserModel, User } from "../user/user"
+import { ComicsStoreModel } from "../comics-store/comics-store"
+import { UserModel } from "../user/user"
+import { GenresStoreModel } from '../genres-store/genres-store';
 
 /**
  * A RootStore model.
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
-  userStore: types.optional(UserModel, {} as User),
-  comicsStore: types.optional(ComicsStoreModel, {} as ComicsStore)
+  userStore: types.optional(UserModel, {}),
+  comicsStore: types.optional(ComicsStoreModel, {}),
+  genresStore: types.optional(GenresStoreModel, {})
 })
 
 /**

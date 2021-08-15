@@ -86,7 +86,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: color.palette.white }}>
       <StatusBar translucent style='dark' />
       <LoadingOverlay show={loading} />
       <KeyboardAvoidingView
@@ -129,7 +129,7 @@ export const LoginScreen = observer(function LoginScreen() {
                     onChangeText={setUsername}
                     value={username}
                   />
-                  <FontAwesomeIcon name="user-o" color={usernameError ? color.error : color.inputIcon} size={35} style={styles.inputIcon} />
+                  <FontAwesomeIcon name="user-o" color={usernameError ? color.error : color.inputIcon} size={30} style={styles.inputIcon} />
                 </View>
                 <Text style={styles.errorText}>{usernameError}</Text>
               </View>
@@ -149,7 +149,7 @@ export const LoginScreen = observer(function LoginScreen() {
                   ref={emailRef}
                   value={email}
                 />
-                <FeatherIcon name="mail" color={emailError ? color.error : color.inputIcon} size={35} style={styles.inputIcon} />
+                <FeatherIcon name="mail" color={emailError ? color.error : color.inputIcon} size={30} style={styles.inputIcon} />
               </View>
               <Text style={styles.errorText}>{emailError}</Text>
             </View>
@@ -167,7 +167,7 @@ export const LoginScreen = observer(function LoginScreen() {
                   ref={passwordRef}
                   value={password}
                 />
-                <FeatherIcon name="eye-off" color={passwordError || formError ? color.error : color.inputIcon} size={35} style={styles.inputIcon} />
+                <FeatherIcon name="eye" color={passwordError || formError ? color.error : color.inputIcon} size={30} style={styles.inputIcon} />
               </View>
               <Text style={styles.errorText}>{passwordError || formError}</Text>
             </View>

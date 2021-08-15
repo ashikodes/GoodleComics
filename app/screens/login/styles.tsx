@@ -86,12 +86,11 @@ export default StyleSheet.create({
     borderWidth: 3,
     height: 60,
     paddingLeft: 20,
-    paddingRight: 10
+    paddingRight: 15
   },
 
   inputContainer: {
-    marginTop: 15,
-    position: 'relative',
+    marginTop: 15
   },
 
   inputError: {
@@ -99,8 +98,8 @@ export default StyleSheet.create({
   },
 
   inputIcon: {
-    height: 35,
-    width: 35,
+    height: 30,
+    width: 30,
   },
 
   loader: {

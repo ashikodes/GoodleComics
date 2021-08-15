@@ -41,7 +41,8 @@ export default StyleSheet.create({
   },
 
   comicImage: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     borderRadius: 17
   },
 
@@ -54,6 +55,7 @@ export default StyleSheet.create({
   comicTitle: {
     fontSize: 25,
     color: color.palette.white,
+    textAlign: 'center',
     fontFamily: 'Poppins-Bold',
     lineHeight: 40
   },
@@ -81,6 +83,7 @@ export default StyleSheet.create({
     color: color.palette.white,
     textAlign: 'justify',
     fontFamily: 'Quicksand-Medium',
+    lineHeight: 23,
   },
 
   bottomBtnsWrapper: {
