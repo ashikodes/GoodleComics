@@ -5,6 +5,8 @@
  * will use once logged in.
  */
 import React from "react"
+import { View } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MainNavigator } from "./main-navigator"
@@ -30,9 +32,9 @@ const RootStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: { 
+        cardStyle: {
           backgroundColor: color.palette.white,
-         },
+        },
         headerShown: false,
       }}
     >
@@ -47,14 +49,14 @@ const RootStack = () => {
   )
 }
 
-export const RootNavigator = React.forwardRef<
-  NavigationContainerRef,
-  Partial<React.ComponentProps<typeof NavigationContainer>>
->((props, ref) => {
+export const RootNavigator = React.forwardRef<NavigationContainerRef, Partial<React.ComponentProps<typeof NavigationContainer>>>((props, ref) => {
   return (
-    <NavigationContainer {...props} ref={ref}>
-      <RootStack />
-    </NavigationContainer>
+    <View style={{ flex: 1 }}>
+      <StatusBar translucent style='dark' />
+      <NavigationContainer {...props} ref={ref}>
+        <RootStack />
+      </NavigationContainer>
+    </View>
   )
 })
 

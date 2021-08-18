@@ -20,6 +20,9 @@ export const color = {
    * by their under-powered GPUs.
    */
   transparent: "rgba(0, 0, 0, 0)",
+  darkOverlay: "rgba(0, 0, 0, 0.7)",
+  transparent80: "rgba(255, 255, 255, 0.8)",
+  transparentxx: "rgba(255, 255, 255, 0.97)",
   opaque: "#000000c0",
   yellow: '#FFC107',
   primaryBlue: '#364F6B',

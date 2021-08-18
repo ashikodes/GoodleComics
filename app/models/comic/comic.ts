@@ -1,4 +1,4 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { types } from "mobx-state-tree"
 
 /**
  * Model description here for TypeScript hints.
@@ -15,8 +15,4 @@ export const ComicModel = types
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
 
-type ComicType = Instance<typeof ComicModel>
-export interface Comic extends ComicType {}
-type ComicSnapshotType = SnapshotOut<typeof ComicModel>
-export interface ComicSnapshot extends ComicSnapshotType {}
 export const createComicDefaultModel = () => types.optional(ComicModel, {})

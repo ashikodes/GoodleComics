@@ -1,148 +1,203 @@
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View, Image, Platform, ScrollView, TouchableHighlight } from "react-native"
-import { Screen, Text } from "../../components"
+import { View, Image, FlatList, ScrollView, TouchableOpacity, RefreshControl } from "react-native"
+import { Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
-import { color } from "../../theme"
 import { load, remove } from "../../utils/storage";
-
-const styles = StyleSheet.create({
-  cardImage: {
-    borderRadius: 8,
-    height: 184,
-    width: 150,
-  },
-  comicCard: {
-    marginRight: 15,
-    width: 150,
-  },
-  comicName: {
-    color: color.palette.black,
-    fontFamily: Platform.select({
-      ios: 'Poppins',
-      android: 'Poppins-Medium',
-    }),
-    fontSize: 18,
-    fontWeight: '600',
-    marginTop: 5,
-    paddingRight: 10,
-  },
-  comicsSection: {
-    backgroundColor: color.palette.white,
-    paddingTop: 50,
-  },
-  container: {
-    paddingBottom: 100,
-    paddingLeft: 44,
-  },
-  header: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingRight: 44,
-    paddingTop: 60,
-  },
-  headerImage: {
-    borderRadius: 20,
-    height: 40,
-    marginRight: 20,
-    width: 40,
-  },
-  headerProfile: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  headerText: {
-    color: color.palette.black,
-    fontFamily: Platform.select({
-      ios: 'Poppins-SemiBold',
-      android: 'Poppins-SemiBold',
-    }),
-    fontSize: 24,
-  },
-  listIcon: {
-    height: 14,
-    width: 20,
-  },
-  sectionHeader: {
-    color: color.lightGray,
-    fontFamily: Platform.select({
-      ios: 'Quicksand-SemiBold',
-      android: 'Quicksand-SemiBold',
-    }),
-    fontSize: 16,
-    marginBottom: 22,
-  },
-  sectionSlide: {
-    // backgroundColor: color.transparent,
-  }
-})
+import AppTitleBar, { appTitleBarHeight } from '../../components/title-bar';
+import { Icon, ImageWithPlaceholder, AppImageBackground } from '../../components';
+import styles from "./styles"
+import { color } from "../../theme"
+import Config from "react-native-config"
+import LinearGradient from 'react-native-linear-gradient'
+import { getStatusBarHeight } from "react-native-iphone-x-helper"
 
 export const ComicsScreen = observer(function ComicsScreen() {
   // Pull in one of our MST stores
-  const { comicsStore } = useStores()
-  const { getComics, comics } = comicsStore
+  const { genresStore, comicsStore } = useStores()
+  const { getGenres, genres, loadingGenres } = genresStore
+  const { saveSingleComic } = comicsStore
 
   // Pull in navigation via hook
   const navigation = useNavigation()
   const [profile, setUserProfile] = useState<any>({})
-  useEffect(() => {
-    const loadUser = async () => {
-      const user = await load('userProfile')
-      if (user) {
-        setUserProfile(user)
-        getComics()
-      } else {
-        navigation.navigate('onboard')
-      }
-    }
 
+  const loadUser = async () => {
+    const user = await load('userProfile')
+    if (user) {
+      setUserProfile(user)
+    } else {
+      navigation.navigate('onboard')
+    }
+  }
+
+  useEffect(() => {
     loadUser()
+    getGenres()
   }, [])
 
   const logout = async () => {
-    await remove('userProfile')
+    remove('userProfile')
     navigation.navigate('onboard')
   }
 
-  return (
-    <Screen style={styles.container} preset="scroll">
-      <View style={styles.header}>
-        <View style={styles.headerProfile}>
-          {profile?.picture && <Image style={styles.headerImage} source={{ uri: profile?.picture}} />}
-          <Text style={styles.headerText}>Hi, {profile?.username}</Text>
-        </View>
-        <TouchableHighlight onPress={logout}>
-          <Image style={styles.listIcon} source={require('../../../assets/images/list-icon.png')} />
-        </TouchableHighlight>
-      </View>
+  const _navigateToComicDetails = (comic) => {
+    saveSingleComic(comic)
+    navigation.navigate('comic-details');
+  }
 
-      <View style={styles.comicsSection}>
-        <Text style={styles.sectionHeader}>New from embassy</Text>
-        <ScrollView horizontal style={styles.sectionSlide}>
-          {comics.map(comic => (
-            <View key={comic.id} style={styles.comicCard}>
-              <Image style={styles.cardImage} source={{ uri: comic?.imageThumbnail }} />
-              <Text style={styles.comicName}>{comic.title}</Text>
-            </View>
-          ))}
-        </ScrollView>
+  const _genresDataFiltered = () => {
+    const comicGenreArray = JSON.parse(genres).map(genre => genre);
+    const comicGenreFiltered = comicGenreArray.filter(genre => genre.comics.length > 0);
+    return comicGenreFiltered ?? []
+  }
+
+  const _renderTitleBar = () => {
+    return (
+      <View style={styles.titleBarWrapper}>
+        <LinearGradient
+          locations={[0, 0.7, 1]}
+          colors={[color.palette.white, color.transparentxx, color.transparent]}
+        >
+          <AppTitleBar
+            statusBarStyle='dark'
+            backgroundColor={color.transparent}
+            contentContainerStyle={styles.titleBarStyle}
+            leading={
+              profile?.picture
+                ? <Image style={styles.headerImage} source={{ uri: profile?.picture }} />
+                : <Icon icon='ic-default-user' style={styles.headerImage} />
+            }
+            title={
+              <Text style={styles.headerText}>Hi, {profile?.username}</Text>
+            }
+            trailing={
+              <TouchableOpacity onPress={logout}>
+                <Icon icon='search-normal' style={styles.searchIcon} />
+              </TouchableOpacity>
+            }
+          />
+        </LinearGradient>
       </View>
-      
-      <View style={styles.comicsSection}>
-        <Text style={styles.sectionHeader}>Must read for you</Text>
-        <ScrollView horizontal style={styles.sectionSlide}>
-          {comics.map(comic => (
-            <View key={comic.id} style={styles.comicCard}>
-              <Image style={styles.cardImage} source={{ uri: comic?.imageThumbnail }} />
-              <Text style={styles.comicName}>{comic.title}</Text>
-            </View>
-          ))}
-        </ScrollView>
+    )
+  }
+
+  const _renderComicList = () => {
+    return (
+      <FlatList
+        data={_genresDataFiltered()}
+        nestedScrollEnabled
+        renderItem={({ item }) => (
+          <View style={styles.comicsSection}>
+            <Text style={styles.sectionHeader}>
+              {item.title}
+            </Text>
+            <FlatList
+              horizontal
+              data={item.comics}
+              nestedScrollEnabled
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.comicHorizontalItemListContentContainerStyle}
+              renderItem={({ item: comic }) => (
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  key={comic.id}
+                  style={styles.comicCard}
+                  onPress={() => _navigateToComicDetails(comic)}
+                >
+                  <ImageWithPlaceholder style={styles.cardImage} source={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
+                  <Text style={styles.comicName}>{comic.title}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.id}
+            />
+          </View>
+        )}
+        keyExtractor={(item, index) => item.cateName + index}
+      />
+    );
+  }
+
+  const _renderBigComic = () => {
+    const comicData = _genresDataFiltered()[0]?.comics[0] ?? {}
+    return (
+      <View style={{ marginTop: -(appTitleBarHeight + getStatusBarHeight()) }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => _navigateToComicDetails(comicData)}
+        >
+          <AppImageBackground
+            key={`${Config.API_URL}${comicData.cover_page?.formats?.medium?.url}`}
+            style={styles.bigComic}
+            resizeMode='cover'
+            source={{ uri: `${Config.API_URL}${comicData.cover_page?.formats?.medium?.url}` }}
+            onLoadedMainColor={colors => console.log(colors)}
+          >
+            <LinearGradient
+              colors={[color.transparent, color.transparent80, color.palette.white]}
+              locations={[0, 0.4, 1]}
+              style={styles.bigComicInfoWrapper}
+            >
+              <Text style={styles.bigComicInfoTitle} numberOfLines={2}>
+                {comicData.title}
+              </Text>
+              <Text style={styles.bigComicInfoDescShort} numberOfLines={1}>
+                {comicData.summary}
+              </Text>
+            </LinearGradient>
+          </AppImageBackground>
+        </TouchableOpacity>
+        <View style={styles.bigComicButtonWrapper}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.bigComicButtonItem}
+          >
+            <Icon icon='ic-comic-mark' style={styles.bigComicButtonItemIcon} />
+            <Text style={styles.bigComicButtonItemText}>
+              Bookmark
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.bigComicButtonItem}
+          >
+            <Icon icon='eye' style={styles.bigComicButtonItemIcon} />
+            <Text style={styles.bigComicButtonItemTextRead}>
+              Read
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.bigComicButtonItem}
+          >
+            <Icon icon='ic-preview' style={styles.bigComicButtonItemIcon} />
+            <Text style={styles.bigComicButtonItemText}>
+              Preview
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </Screen>
+    )
+  }
+
+  return (
+    <View style={styles.main}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={loadingGenres}
+            onRefresh={() => getGenres()}
+            progressViewOffset={100}
+          />
+        }
+        stickyHeaderIndices={[0]}
+      >
+        {_renderTitleBar()}
+        {_renderBigComic()}
+        {_renderComicList()}
+      </ScrollView>
+    </View>
   )
 })

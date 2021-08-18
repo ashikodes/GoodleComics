@@ -10,3 +10,6 @@ export * from "./text/text"
 export * from "./text-field/text-field"
 export * from "./wallpaper/wallpaper"
 export * from "./auto-image/auto-image"
+export * from './loading-overlay'
+export * from './image-with-placeholder'
+export * from './app-image-background'

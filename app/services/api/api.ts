@@ -48,6 +48,14 @@ export class Api {
     return this.apisauce.get('/comics')
   }
 
+  fetchSingleComic(id) {
+    return this.apisauce.get(`/comics/${id}`)
+  }
+
+  fetchGenres() {
+    return this.apisauce.get('/genres')
+  }
+
   async registerUser({ username, email, password }) {
     const response = await this.apisauce.post('/auth/local/register', {
       username, email, password
@@ -65,7 +73,7 @@ export class Api {
     const response = await this.apisauce.post('/auth/local', {
       identifier: email, password
     })
-    
+    console.log(response);
     // the typical ways to die when calling an api
     if (!response.ok) {
       return { error: response?.data }

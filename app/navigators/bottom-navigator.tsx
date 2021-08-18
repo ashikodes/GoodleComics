@@ -5,24 +5,24 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { ComicsScreen, CategoryScreen, LibraryScreen, SettingsScreen } from "../screens"
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import FeatherIcons from 'react-native-vector-icons/Feather'
+import { Icon } from '../components'
+import { color } from "../theme"
+import { getBottomSpace } from "react-native-iphone-x-helper"
 
 const styles = StyleSheet.create({
   tab: {
-    height: 75,
-    paddingBottom: 14,
+    height: 75 + getBottomSpace(),
+    paddingBottom: getBottomSpace(),
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   tabBarLabel: {
-    fontFamily: Platform.select({
-      ios: 'Quicksand-SemiBold',
-      android: 'Quicksand-SemiBold',
-    }),
+    fontFamily: 'Quicksand-SemiBold',
     fontSize: 14,
+    lineHeight: 14
   }
 })
 
@@ -53,55 +53,55 @@ export function BottomNavigator() {
     <Tab.Navigator
       backBehavior="firstRoute"
       initialRouteName="comics"
-      tabBarOptions={{
-        style: styles.tab,
-        labelStyle: styles.tabBarLabel,
+      screenOptions={{
+        tabBarStyle: styles.tab,
+        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarActiveTintColor: color.palette.appDarkBlue,
+        tabBarInactiveTintColor: color.palette.appGray2
       }}
     >
       <Tab.Screen
         name="comics"
         component={ComicsScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Home',
-          tabBarIcon: function Icon({ color, size }) {
-            return (
-              <AntDesignIcon name="home" color={color} size={size} />
-            )} 
+          tabBarIcon: ({ focused, size }) => (
+            <Icon icon={focused ? "ic-home-active" : "ic-home"} style={{ width: size, height: size }} />
+          )
         }}
       />
       <Tab.Screen
         name="categories"
         component={CategoryScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Categories',
-          tabBarIcon: function Icon({ color, size }) {
-            return (
-              <MaterialIcons name="category" color={color} size={size} />
-            )
-          },
-
+          tabBarIcon: ({ focused, size }) => (
+            <Icon icon={focused ? "ic-categories-active" : "ic-categories"} style={{ width: size, height: size }} />
+          )
         }}
       />
       <Tab.Screen
         name="library"
         component={LibraryScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Library',
-          tabBarIcon: function Icon({ color, size }) {
-            return (
-              <FeatherIcons name="bookmark" color={color} size={size} />
-            )} 
+          tabBarIcon: ({ focused, size }) => (
+            <Icon icon={focused ? "ic-library-active" : "ic-library"} style={{ width: size, height: size }} />
+          )
         }}
       />
       <Tab.Screen
         name="settings"
         component={SettingsScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Settings',
-          tabBarIcon: function Icon({ color, size }) {
-            return (
-              <AntDesignIcon name="setting" color={color} size={size} />
-            )} 
+          tabBarIcon: ({ focused, size }) => (
+            <Icon icon={focused ? "ic-settings-active" : "ic-settings"} style={{ width: size, height: size }} />
+          )
         }}
       />
     </Tab.Navigator>

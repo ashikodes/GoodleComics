@@ -1,4 +1,4 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { types } from "mobx-state-tree"
 import { withEnvironment } from "../extensions/with-environment"
 
 /**
@@ -17,10 +17,4 @@ export const UserModel = types
     async loginUser(user) {
       return await self.environment.api.loginUser(user)
     },
-  })) 
-
-type UserType = Instance<typeof UserModel>
-export interface User extends UserType {}
-type UserSnapshotType = SnapshotOut<typeof UserModel>
-export interface UserSnapshot extends UserSnapshotType {}
-export const createUserDefaultModel = () => types.optional(UserModel, {})
+  }))
