@@ -1,7 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, Image, FlatList, ScrollView, TouchableOpacity } from "react-native"
-import { Text } from "../../components"
+import Config from "react-native-config"
+import { Text, ImageWithPlaceholder } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { remove } from "../../utils/storage";
@@ -10,9 +11,10 @@ import styles from "./styles"
 import { color } from "../../theme"
 
 export const CategoryScreen = observer(function CategoryScreen() {
+  const [comicData, setComicData] = useState([])
   // Pull in one of our MST stores
   const { comicsStore } = useStores()
-  const { getComics, comics } = comicsStore
+  const { getComics, comics, saveSingleComic } = comicsStore
 
   // Pull in navigation via hook
   const navigation = useNavigation()
@@ -21,9 +23,18 @@ export const CategoryScreen = observer(function CategoryScreen() {
     getComics()
   }, [])
 
+  useEffect(() => {
+    setComicData(JSON.parse(comics))
+  }, [comics])
+
   const logout = async () => {
     await remove('userProfile')
     navigation.navigate('onboard')
+  }
+
+  const _navigateToComicDetails = (comic) => {
+    saveSingleComic(comic)
+    navigation.navigate('comic-details', { id: comic.id });
   }
 
   const _renderTitleBar = () => {
@@ -53,44 +64,43 @@ export const CategoryScreen = observer(function CategoryScreen() {
     const comicHomeData = [
       {
         cateName: "For young adults",
-        data: comics
+        data: comicData
       },
       {
         cateName: "For Kids",
-        data: comics
+        data: comicData
       }
     ];
     return (
-      <FlatList
-        data={comicHomeData}
-        nestedScrollEnabled
-        renderItem={({ item }) => (
-          <View style={styles.comicsSection}>
-            <Text style={styles.sectionHeader}>
-              {item.cateName}
-            </Text>
-            <FlatList
-              horizontal
-              data={item.data}
-              nestedScrollEnabled
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.comicHorizontalItemListContentContainerStyle}
-              renderItem={({ item: comic }) => (
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  key={comic.id}
-                  style={styles.comicCard}
-                >
-                  <Image style={styles.cardImage} source={{ uri: comic?.imageThumbnail }} />
-                  <Text style={styles.comicName}>{comic.title}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item.id}
-            />
-          </View>
-        )}
-        keyExtractor={(item, index) => item.cateName + index}
-      />
+      comicHomeData.map(item => (
+        <View 
+          key={item.cateName}
+          style={styles.comicsSection}
+        >
+          <Text style={styles.sectionHeader}>
+            {item.cateName}
+          </Text>
+          <FlatList
+            horizontal
+            data={item.data}
+            nestedScrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.comicHorizontalItemListContentContainerStyle}
+            renderItem={({ item: comic }) => (
+              <TouchableOpacity
+                activeOpacity={0.5}
+                key={comic.id}
+                style={styles.comicCard}
+                onPress={() => _navigateToComicDetails(comic)}
+              >
+                <ImageWithPlaceholder style={styles.cardImage} source={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
+                <Text style={styles.comicName}>{comic.title}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      ))
     );
   }
 

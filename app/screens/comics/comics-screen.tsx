@@ -22,20 +22,27 @@ export const ComicsScreen = observer(function ComicsScreen() {
   // Pull in navigation via hook
   const navigation = useNavigation()
   const [profile, setUserProfile] = useState<any>({})
+  const [filteredComics, setFilteredComics] = useState([])
 
-  const loadUser = async () => {
+  const loadUserAndGetGenres = async () => {
     const user = await load('userProfile')
     if (user) {
       setUserProfile(user)
+      await getGenres()
     } else {
       navigation.navigate('onboard')
     }
   }
 
   useEffect(() => {
-    loadUser()
-    getGenres()
+    loadUserAndGetGenres()
   }, [])
+
+  useEffect(() => {
+    const comicGenreArray = JSON.parse(genres).map(genre => genre);
+    const comicGenreFiltered = comicGenreArray.filter(genre => genre.comics.length > 0);
+    setFilteredComics(comicGenreFiltered)
+  }, [genres])
 
   const logout = async () => {
     remove('userProfile')
@@ -44,13 +51,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
 
   const _navigateToComicDetails = (comic) => {
     saveSingleComic(comic)
-    navigation.navigate('comic-details');
-  }
-
-  const _genresDataFiltered = () => {
-    const comicGenreArray = JSON.parse(genres).map(genre => genre);
-    const comicGenreFiltered = comicGenreArray.filter(genre => genre.comics.length > 0);
-    return comicGenreFiltered ?? []
+    navigation.navigate('comic-details', { id: comic.id });
   }
 
   const _renderTitleBar = () => {
@@ -85,42 +86,37 @@ export const ComicsScreen = observer(function ComicsScreen() {
 
   const _renderComicList = () => {
     return (
-      <FlatList
-        data={_genresDataFiltered()}
-        nestedScrollEnabled
-        renderItem={({ item }) => (
-          <View style={styles.comicsSection}>
-            <Text style={styles.sectionHeader}>
-              {item.title}
-            </Text>
-            <FlatList
-              horizontal
-              data={item.comics}
-              nestedScrollEnabled
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.comicHorizontalItemListContentContainerStyle}
-              renderItem={({ item: comic }) => (
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  key={comic.id}
-                  style={styles.comicCard}
-                  onPress={() => _navigateToComicDetails(comic)}
-                >
-                  <ImageWithPlaceholder style={styles.cardImage} source={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
-                  <Text style={styles.comicName}>{comic.title}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item.id}
-            />
-          </View>
-        )}
-        keyExtractor={(item, index) => item.cateName + index}
-      />
+      filteredComics.map(item => (
+        <View key={item.id} style={styles.comicsSection}>
+          <Text style={styles.sectionHeader}>
+            {item.title}
+          </Text>
+          <FlatList
+            horizontal
+            data={item.comics}
+            nestedScrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.comicHorizontalItemListContentContainerStyle}
+            renderItem={({ item: comic }) => (
+              <TouchableOpacity
+                activeOpacity={0.5}
+                key={comic.id}
+                style={styles.comicCard}
+                onPress={() => _navigateToComicDetails(comic)}
+              >
+                <ImageWithPlaceholder style={styles.cardImage} source={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
+                <Text style={styles.comicName}>{comic.title}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      ))
     );
   }
 
   const _renderBigComic = () => {
-    const comicData = _genresDataFiltered()[0]?.comics[0] ?? {}
+    const comicData = filteredComics[0]?.comics[0] ?? {}
     return (
       <View style={{ marginTop: -(appTitleBarHeight + getStatusBarHeight()) }}>
         <TouchableOpacity
@@ -132,7 +128,6 @@ export const ComicsScreen = observer(function ComicsScreen() {
             style={styles.bigComic}
             resizeMode='cover'
             source={{ uri: `${Config.API_URL}${comicData.cover_page?.formats?.medium?.url}` }}
-            onLoadedMainColor={colors => console.log(colors)}
           >
             <LinearGradient
               colors={[color.transparent, color.transparent80, color.palette.white]}

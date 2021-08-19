@@ -73,7 +73,6 @@ export class Api {
     const response = await this.apisauce.post('/auth/local', {
       identifier: email, password
     })
-    console.log(response);
     // the typical ways to die when calling an api
     if (!response.ok) {
       return { error: response?.data }

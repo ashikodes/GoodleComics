@@ -18,6 +18,7 @@ import { color } from "../../theme";
 export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   const [isPurchased, setIsPurchased] = useState(false)
   const [isMarked, setIsMarked] = useState(false)
+  const [comicData, setComicData] = useState({})
 
   // Pull in one of our MST stores
   const { comicsStore } = useStores()
@@ -26,17 +27,16 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   // Pull in navigation via hook
   const navigation = useNavigation()
 
-  const _getSingleComicData = () => {
-    return JSON.parse(singleComic)
-  }
-
   useEffect(() => {
-    _loadSingleComic()
+    _loadSingleComic();
   }, [])
 
-  const _loadSingleComic = () => {
-    const comicRawData = _getSingleComicData();
-    getSingleComic(comicRawData.id)
+  useEffect(() => {
+    setComicData(JSON.parse(singleComic))
+  }, [singleComic])
+
+  const _loadSingleComic = async () => {
+    await getSingleComic(props?.route?.params?.id)
   } 
 
   const _renderAppTitleBar = () => {
@@ -61,7 +61,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
           <ImageWithPlaceholder
             resizeMode='cover'
             style={styles.comicImage}
-            source={{ uri: `${Config.API_URL}${_getSingleComicData()?.cover_page?.formats?.large?.url}` }}
+            source={{ uri: `${Config.API_URL}${comicData?.cover_page?.formats?.large?.url}` }}
           />
         </View>
       </View>
@@ -73,7 +73,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
       <View style={styles.comicTitleRatingAndPriceWrapper}>
         <View style={{ flex: 1 }}>
           <Text style={styles.comicTitle}>
-            {_getSingleComicData().title}
+            {comicData.title}
           </Text>
           <StarRating
             disabled
@@ -87,7 +87,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
           />
         </View>
         <Text style={styles.comicPrice}>
-          {_getSingleComicData().price ? `$${_getSingleComicData().price}` : "Free"}
+          {comicData.price ? `$${comicData.price}` : "Free"}
         </Text>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -109,7 +109,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
           Description
         </Text>
         <Text style={styles.comicDescription}>
-          {_getSingleComicData().summary}
+          {comicData.summary}
         </Text>
       </View>
     );
@@ -144,12 +144,14 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
           resizeMode='cover'
           style={styles.background}
           blurRadius={10}
-          source={{ uri: `${Config.API_URL}${_getSingleComicData()?.cover_page?.formats?.thumbnail?.url}` }}
+          source={{ uri: `${Config.API_URL}${comicData?.cover_page?.formats?.thumbnail?.url}` }}
         />
         <View style={styles.backgroundDarkOverlay} />
       </View>
     )
   }
+
+  if(!comicData.id) return null
 
   return (
     <View style={styles.main}>
