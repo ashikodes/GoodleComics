@@ -8,6 +8,7 @@ import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
 import { OnboardScreen, LoginScreen, ComicDetailsScreen } from "../screens"
 import { BottomNavigator } from "./bottom-navigator"
+import { ComicReadScreen } from "../screens/comic-read"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -25,6 +26,8 @@ export type PrimaryParamList = {
   onboard: undefined,
   login: undefined,
   home: undefined,
+  'comic-details': undefined,
+  'comic-read': undefined,
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -43,6 +46,7 @@ export function MainNavigator() {
       <Stack.Screen name='login' component={LoginScreen} />
       <Stack.Screen name='home' component={BottomNavigator} />
       <Stack.Screen name='comic-details' component={ComicDetailsScreen} />
+      <Stack.Screen name='comic-read' component={ComicReadScreen} />
     </Stack.Navigator>
   )
 }
