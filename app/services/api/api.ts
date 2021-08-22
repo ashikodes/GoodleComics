@@ -56,6 +56,10 @@ export class Api {
     return this.apisauce.get('/genres')
   }
 
+  fetchBookmarks(userId) {
+    return this.apisauce.get(`bookmarks/?user_id=${userId}`)
+  }
+
   async registerUser({ username, email, password }) {
     const response = await this.apisauce.post('/auth/local/register', {
       username, email, password

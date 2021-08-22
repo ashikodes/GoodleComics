@@ -104,7 +104,7 @@ export const ComicsScreen = observer(function ComicsScreen() {
                 style={styles.comicCard}
                 onPress={() => _navigateToComicDetails(comic)}
               >
-                <ImageWithPlaceholder style={styles.cardImage} source={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
+                <ImageWithPlaceholder style={styles.cardImage} src={{ uri: `${Config.API_URL}${comic?.cover_page?.formats?.medium?.url}` }} />
                 <Text style={styles.comicName}>{comic.title}</Text>
               </TouchableOpacity>
             )}

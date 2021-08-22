@@ -52,5 +52,18 @@ export default StyleSheet.create({
   listIcon: {
     height: 14,
     width: 20,
+  },
+
+  tabBarTitle: {
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 16,
+    color: color.palette.black
+  },
+
+  tabBarIndicator: {
+    width: 43,
+    height: 5,
+    marginTop: 5,
+    borderRadius: 5 / 2
   }
 })
