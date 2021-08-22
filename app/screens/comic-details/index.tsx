@@ -16,6 +16,7 @@ import Config from "react-native-config"
 import { color } from "../../theme";
 
 export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
+  // TODO: get state from api
   const [isPurchased, setIsPurchased] = useState(false)
   const [isMarked, setIsMarked] = useState(false)
   const [comicData, setComicData] = useState({})
@@ -35,6 +36,14 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
   useEffect(() => {
     setComicData(JSON.parse(singleComic))
   }, [singleComic])
+
+  const purchaseToRead = () => {
+    const hasPurchased = isPurchased;
+    setIsPurchased(true);
+    if(hasPurchased) {
+      navigation.navigate('comic-read');
+    }
+  }
 
   const _loadSingleComic = async () => {
     await getSingleComic(props?.route?.params?.id)
@@ -122,7 +131,7 @@ export const ComicDetailsScreen = observer(function ComicDetailsScreen(props) {
       <View style={styles.bottomBtnsWrapper}>
         <TouchableOpacity
           style={styles.purchaseReadBtn}
-          onPress={() => setIsPurchased(!isPurchased)}
+          onPress={purchaseToRead}
           activeOpacity={0.8}
         >
           <Text style={styles.purchaseReadBtnText}>
