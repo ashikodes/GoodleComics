@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
+import { Image } from 'react-native';
 
 export const ImageWithPlaceholder = (props) => {
-  const { style, source } = props;
-  const [imageSource, setImageSource] = useState(null);
+  const { style, src } = props;
+  const [imageSource, setImageSource] = useState(require('./placeholder-comic.jpg'));
 
   useEffect(() => {
-    setImageSource(source)
+    if (src)
+      setImageSource(src)
   }, []);
 
   const _onGuestPhotoLoadFailed = () => setImageSource(require('./placeholder-comic.jpg'))

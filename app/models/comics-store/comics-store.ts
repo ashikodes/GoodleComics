@@ -18,7 +18,8 @@ export const ComicsStoreModel = types
     saveComics: (comics) => {
       self.comics = comics
     },
-    setLoadingSingleComic: (val) => self.loadingSingleComics = val
+    setLoadingSingleComic: (val) => self.loadingSingleComics = val,
+    clearSingleComic: () => self.singleComic = '{}'
   }))
   .actions((self) => ({
     getComics: async () => {

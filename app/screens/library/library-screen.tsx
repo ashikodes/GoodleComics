@@ -8,6 +8,9 @@ import { remove } from "../../utils/storage";
 import AppTitleBar from '../../components/title-bar';
 import styles from "./styles"
 import { color } from "../../theme"
+import { Tabs } from '@ant-design/react-native';
+
+import BookmarkedTab from "./components/bookmarked-tab";
 
 export const LibraryScreen = observer(function LibraryScreen() {
   // Pull in one of our MST stores
@@ -37,7 +40,6 @@ export const LibraryScreen = observer(function LibraryScreen() {
             <Text style={styles.headerText}>
               My Libraries
             </Text>
-            <View style={styles.headerTextUnderline} />
           </View>
         }
         trailing={
@@ -49,14 +51,66 @@ export const LibraryScreen = observer(function LibraryScreen() {
     )
   }
 
+  const _renderTabBarForTabView = (tabProps) => {
+    return (
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginHorizontal: 30
+      }}>
+        {
+          tabProps.tabs.map((tab, index) => (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              key={index.toString()}
+              onPress={() => {
+                const { goToTab, onTabClick } = tabProps;
+                onTabClick && onTabClick(tabProps.tabs[index], index);
+                goToTab && goToTab(index);
+              }}
+            >
+              <Text style={styles.tabBarTitle}>
+                {tab.title}
+              </Text>
+              <View
+                style={[styles.tabBarIndicator, {
+                  backgroundColor: tabProps.activeTab === index
+                    ? color.palette.appVeryLightBlue
+                    : color.transparent
+                }]}
+              />
+            </TouchableOpacity>
+          ))
+        }
+      </View>
+    );
+  }
+
+  const _renderTabsView = () => {
+    const tabs = [
+      { title: "Books" },
+      { title: "Bookmarked" },
+    ];
+
+    return (
+      <Tabs
+        tabs={tabs}
+        renderTabBar={_renderTabBarForTabView}
+        styles={{
+          topTabBarSplitLine: { borderBottomWidth: 0 }
+        }}
+      >
+        <View></View>
+        <BookmarkedTab />
+      </Tabs>
+    );
+  }
+
   return (
     <View style={styles.main}>
-      <ScrollView
-        style={styles.scrollViewContentWrapper}
-        showsVerticalScrollIndicator={false}
-      >
-        {_renderTitleBar()}
-      </ScrollView>
+      {_renderTitleBar()}
+      {_renderTabsView()}
     </View>
   )
 })

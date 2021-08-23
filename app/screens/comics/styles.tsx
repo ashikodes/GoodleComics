@@ -135,13 +135,14 @@ export default StyleSheet.create({
 
   bigComicInfoTitle: {
     color: color.palette.black,
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: 'Poppins-Bold',
+    marginTop: 20
   },
 
   bigComicInfoDescShort: {
     color: color.palette.black,
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: 'Poppins-Medium'
   },
 
